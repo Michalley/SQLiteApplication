@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">SQLiteApplication</string>
+
+    <string-array name="Tabales">
+        <item>Name</item>
+        <item>Personal Info</item>
+    </string-array>
+
 </resources>

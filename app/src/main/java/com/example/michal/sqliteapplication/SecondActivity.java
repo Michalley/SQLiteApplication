@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.Toast;
 
@@ -19,13 +20,13 @@ import java.util.ArrayList;
 import static com.example.michal.sqliteapplication.Name.TABLE_NAME;
 import static com.example.michal.sqliteapplication.PersoInfo.TABLE_PERSOINFO;
 
-public class SecondActivity extends AppCompatActivity {
+public class SecondActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
     ArrayList <String> Data1 = new ArrayList<>();
     ArrayList <String> Data2 = new ArrayList<>();
 
     ListView lv;
-    Switch sw;
+    Spinner sp;
 
     SQLiteDatabase db;
     HelperDB hdb;
@@ -40,7 +41,13 @@ public class SecondActivity extends AppCompatActivity {
         setContentView(R.layout.activity_second);
 
         lv = (ListView) findViewById(R.id.lv);
-        sw = (Switch) findViewById(R.id.sw);
+        sp = (Spinner) findViewById(R.id.sp);
+
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.Tabales, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        sp.setOnItemSelectedListener(this);
+        sp.setAdapter(adapter);
 
         hdb = new HelperDB(this);
         db = hdb.getReadableDatabase();
@@ -78,17 +85,6 @@ public class SecondActivity extends AppCompatActivity {
         lv.setAdapter(adp);
     }
 
-    public void go(View view) {
-        if (!sw.isChecked()){
-            adp = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,Data1);
-            lv.setAdapter(adp);
-        }
-        else{
-            adp = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,Data2);
-            lv.setAdapter(adp);
-        }
-    }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         menu.add("Back");
@@ -107,5 +103,22 @@ public class SecondActivity extends AppCompatActivity {
             Toast.makeText(this,"Application Of Michal Leybovich",Toast.LENGTH_LONG).show();
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        if (position == 0){
+            adp = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,Data1);
+            lv.setAdapter(adp);
+        }
+        if (position == 1){
+            adp = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,Data2);
+            lv.setAdapter(adp);
+        }
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
     }
 }
